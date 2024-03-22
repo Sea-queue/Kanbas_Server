@@ -15,10 +15,10 @@ const module = {
 };
 
 const todos = [
-  { id: 1, title: "T1", completed: false },
-  { id: 2, title: "T2", completed: true },
-  { id: 3, title: "T3", completed: false },
-  { id: 4, title: "T4", completed: true },
+  { id: 1, title: "T1", completed: false, description: "" },
+  { id: 2, title: "T2", completed: true, description: "" },
+  { id: 3, title: "T3", completed: false, description: "" },
+  { id: 4, title: "T4", completed: true, description: "" },
 ];
 
 const Lab5 = (app) => {
@@ -153,7 +153,6 @@ const Lab5 = (app) => {
     const todo = todos.find((item) => {
       return item.id === parseInt(id);
     });
-    console.log(todo);
     res.json(todo);
   });
 
@@ -174,6 +173,20 @@ const Lab5 = (app) => {
     const todo = todos.find((t) => t.id === parseInt(id));
     todo.title = title;
     res.json(todos);
+  });
+
+  app.get("/a5/todos/:id/completed/:completed", (req, res) => {
+    const { id, completed } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    todo.completed = completed === "true" ? true : false;
+    res.json(todo);
+  });
+
+  app.get("/a5/todos/:id/description/:description", (req, res) => {
+    const { id, description } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    todo.description = description;
+    res.json(todo);
   });
 };
 export default Lab5;
