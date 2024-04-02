@@ -4,7 +4,6 @@ function ModuleRoutes(app) {
   app.get("/api/courses/:cid/modules", (req, res) => {
     const { cid } = req.params;
     const modules = Database.modules.filter((m) => m.course === cid);
-    console.log("get all", modules);
     res.send(modules);
   });
 
