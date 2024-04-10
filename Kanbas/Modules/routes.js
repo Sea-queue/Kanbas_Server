@@ -43,7 +43,7 @@ function ModuleRoutes(app) {
     // };
     // Database.modules.push(Database.modules[moduleIndex]);
     // console.log(Database.modules[moduleIndex]);
-    res.sendStatus(204);
+    // res.sendStatus(204);
   });
 }
 
