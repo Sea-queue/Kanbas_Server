@@ -1,38 +1,61 @@
-import Database from "../Database/index.js";
+// import Database from "../Database/index.js";
+import * as dao from "./dao.js";
 
 function ModuleRoutes(app) {
-  app.get("/api/courses/:cid/modules", (req, res) => {
+  app.get("/api/courses/:cid/modules", async (req, res) => {
     const { cid } = req.params;
-    const modules = Database.modules.filter((m) => m.course === cid);
-    res.send(modules);
+    // const modules = Database.modules.filter((m) => m.course === cid);
+    try {
+      const modules = await dao.findAllModule(cid);
+      res.send(modules);
+    } catch (error) {
+      res.sendStatus(404);
+    }
   });
 
-  app.post("/api/courses/:cid/modules", (req, res) => {
+  app.post("/api/courses/:cid/modules", async (req, res) => {
     const { cid } = req.params;
     const newModule = {
       ...req.body,
       course: cid,
-      _id: new Date().getTime().toString(),
     };
-    Database.modules.push(newModule);
-    res.send(newModule);
+    // Database.modules.push(newModule);
+    try {
+      const addedModule = await dao.createModule(newModule);
+      res.send(addedModule);
+    } catch (error) {
+      res.sendStatus(400);
+    }
   });
 
-  app.delete("/api/modules/:mid", (req, res) => {
+  app.delete("/api/modules/:mid", async (req, res) => {
     const { mid } = req.params;
-    Database.modules = Database.modules.filter((m) => m._id !== mid);
-    res.sendStatus(200);
+    // Database.modules = Database.modules.filter((m) => m._id !== mid);
+    try {
+      const status = await dao.deleteModule(mid);
+      res.sendStatus(status);
+    } catch (error) {
+      res.sendStatus(error);
+    }
   });
 
-  app.put("/api/modules/:mid", (req, res) => {
+  app.put("/api/modules/:mid", async (req, res) => {
     const { mid } = req.params;
-    Database.modules = Database.modules.map((m) => {
-      if (m._id === mid) {
-        return req.body;
-      } else {
-        return m;
-      }
-    });
+    const module = req.body;
+    try {
+      const status = await dao.updateModule(mid, module);
+      res.sendStatus(status);
+    } catch (error) {
+      res.sendStatus(400);
+    }
+
+    // Database.modules = Database.modules.map((m) => {
+    //   if (m._id === mid) {
+    //     return req.body;
+    //   } else {
+    //     return m;
+    //   }
+    // });
     // This is not persistent!
     // const moduleIndex = Database.modules.findIndex((m) => {
     //   m._id === mid;
