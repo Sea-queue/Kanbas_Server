@@ -15,3 +15,7 @@ $ brew install mongodb-community
 Start as service:
 
 $ brew services start mongodb/brew/mongodb-community
+
+db_username: kanbas
+
+mongodb+srv://kanbas:<password>@cluster0.ca3kfuy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
